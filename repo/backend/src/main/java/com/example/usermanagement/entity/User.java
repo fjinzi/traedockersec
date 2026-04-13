@@ -1,102 +1,53 @@
 package com.example.usermanagement.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
+import jakarta.persistence.*;
+import lombok.Data;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 import java.time.LocalDateTime;
 
-@TableName("users")
+@Data
+@Entity
+@Table(name = "users")
+@SQLDelete(sql = "UPDATE users SET deleted = 1 WHERE id = ?")
+@Where(clause = "deleted = 0")
 public class User {
-    @TableId(type = IdType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
+    @Column(unique = true, nullable = false, length = 50)
     private String username;
-    
+
+    @Column(nullable = false, length = 100)
     private String password;
-    
+
+    @Column(length = 100)
     private String email;
-    
-    private String role;
-    
-    private String status;
-    
-    @TableLogic
-    private Integer deleted;
-    
+
+    @Column(length = 20)
+    private String role = "user";
+
+    @Column(length = 20)
+    private String status = "active";
+
+    private Integer deleted = 0;
+
+    @Column(name = "created_time")
     private LocalDateTime createdTime;
-    
+
+    @Column(name = "updated_time")
     private LocalDateTime updatedTime;
 
-    public Long getId() {
-        return id;
+    @PrePersist
+    protected void onCreate() {
+        createdTime = LocalDateTime.now();
+        updatedTime = LocalDateTime.now();
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Integer getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Integer deleted) {
-        this.deleted = deleted;
-    }
-
-    public LocalDateTime getCreatedTime() {
-        return createdTime;
-    }
-
-    public void setCreatedTime(LocalDateTime createdTime) {
-        this.createdTime = createdTime;
-    }
-
-    public LocalDateTime getUpdatedTime() {
-        return updatedTime;
-    }
-
-    public void setUpdatedTime(LocalDateTime updatedTime) {
-        this.updatedTime = updatedTime;
+    @PreUpdate
+    protected void onUpdate() {
+        updatedTime = LocalDateTime.now();
     }
 }
