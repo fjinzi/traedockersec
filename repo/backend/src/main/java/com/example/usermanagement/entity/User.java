@@ -1,31 +1,46 @@
 package com.example.usermanagement.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
+import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 import java.time.LocalDateTime;
 
-@TableName("users")
+@Entity
+@Table(name = "users")
+@SQLDelete(sql = "UPDATE users SET deleted = 1 WHERE id = ?")
+@Where(clause = "deleted = 0")
 public class User {
-    @TableId(type = IdType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
+    @Column(name = "username", nullable = false, unique = true, length = 50)
     private String username;
-    
+
+    @Column(name = "password", nullable = false, length = 100)
     private String password;
-    
+
+    @Column(name = "email", length = 100)
     private String email;
-    
-    private String role;
-    
-    private String status;
-    
-    @TableLogic
-    private Integer deleted;
-    
+
+    @Column(name = "role", length = 20)
+    private String role = "user";
+
+    @Column(name = "status", length = 20)
+    private String status = "active";
+
+    @Column(name = "deleted")
+    private Integer deleted = 0;
+
+    @CreationTimestamp
+    @Column(name = "created_time", updatable = false)
     private LocalDateTime createdTime;
-    
+
+    @UpdateTimestamp
+    @Column(name = "updated_time")
     private LocalDateTime updatedTime;
 
     public Long getId() {
