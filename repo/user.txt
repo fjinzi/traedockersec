@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "username": "admin",
+    "password": "123456",
+    "email": "admin@example.com",
+    "role": "administrator",
+    "status": "active"
+  },
+  {
+    "id": 2,
+    "username": "zhangsan",
+    "password": "123456",
+    "email": "zhangsan@example.com",
+    "role": "user",
+    "status": "active"
+  },
+  {
+    "id": 3,
+    "username": "lisi",
+    "password": "123456",
+    "email": "lisi@example.com",
+    "role": "user",
+    "status": "active"
+  },
+  {
+    "id": 4,
+    "username": "wangwu",
+    "password": "123456",
+    "email": "wangwu@example.com",
+    "role": "user",
+    "status": "inactive"
+  },
+  {
+    "id": 5,
+    "username": "test",
+    "password": "123456",
+    "email": "test@example.com",
+    "role": "tester",
+    "status": "active"
+  }
+]
